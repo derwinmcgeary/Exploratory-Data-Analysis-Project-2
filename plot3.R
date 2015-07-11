@@ -5,7 +5,7 @@ if('downloader'%in%installed.packages()[,1]){
   install.packages("downloader")
   library("downloader")
 }
-library(lattice)
+library(ggplot2)
 # We don't want to download 29MB every time! If you already have the file, you can rename it to
 # "NEI_data.zip" and put it in the working directory
 dataurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
@@ -20,8 +20,12 @@ SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
 ##### To business!
-sub <- subset(NEI, fips == "24510", select=c(Emissions,year, type))
-itds <- aggregate(sub$Emissions, by = list(Year = sub$year, Type = sub$type), FUN = sum)
-colnames(itds) <- c("Year", "Type", "Emissions")
-myplot <- xyplot(Emissions ~ Year | Type, data = itds, layout = c(4,1))
-print(myplot)
+baltimore <- subset(NEI, fips == "24510", select=c(Emissions,year, type))
+baltimore_agg <- aggregate(sub$Emissions, by = list(Year = sub$year, Type = sub$type), FUN = sum)
+colnames(baltimore_agg) <- c("Year", "Type", "Emissions")
+g <- qplot(Year, Emissions, data = baltimore_agg, facets = .~ Type) + geom_smooth(method = "lm")
+print(g)
+# usa_agg <- aggregate(NEI$Emissions, by = list(Year = NEI$year, Type = NEI$type), FUN = sum)
+# colnames(usa_agg) <- c("Year", "Type", "Emissions")
+# h <- qplot(Year, Emissions, data = usa_agg, facets = .~ Type) + geom_smooth(method = "lm")
+# h + labs(title = "Emissions by year and type")
