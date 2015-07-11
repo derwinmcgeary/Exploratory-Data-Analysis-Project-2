@@ -6,6 +6,7 @@ if('downloader'%in%installed.packages()[,1]){
   library("downloader")
 }
 library(ggplot2)
+library(stringi)
 # We don't want to download 29MB every time! If you already have the file, you can rename it to
 # "NEI_data.zip" and put it in the working directory
 dataurl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
@@ -19,13 +20,14 @@ print(datafiles)
 SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
-##### To business!
-baltimore <- subset(NEI, fips == "24510", select=c(Emissions,year, type))
-baltimore_agg <- aggregate(baltimore$Emissions, by = list(Year = baltimore$year, Type = baltimore$type), FUN = sum)
-colnames(baltimore_agg) <- c("Year", "Type", "Emissions")
-g <- qplot(Year, Emissions, data = baltimore_agg, facets = .~ Type) + geom_smooth(method = "lm")
-print(g)
-# usa_agg <- aggregate(NEI$Emissions, by = list(Year = NEI$year, Type = NEI$type), FUN = sum)
-# colnames(usa_agg) <- c("Year", "Type", "Emissions")
-# h <- qplot(Year, Emissions, data = usa_agg, facets = .~ Type) + geom_smooth(method = "lm")
-# h + labs(title = "Emissions by year and type")
+## find all SCC values in SCC where Short.Name includes "Coal" (or "coal")
+coalscc <- subset(SCC, stri_detect_regex(Short.Name,"Coal", case_insensitive=TRUE), select = c(SCC))
+coalsccs <- coalscc$SCC
+## subset NEI to include only the above SCC values, plus Emissions and Year
+coalnei <- subset(NEI, SCC%in%coalsccs, select = c(Emissions,year))
+## aggregate by year
+coalnei_agg <- aggregate(coalnei$Emissions, by = list(Year = coalnei$year), FUN = sum)
+colnames(coalnei_agg) <- c("Year", "Emissions")
+## and plot
+f <- qplot(Year, Emissions, data = coalnei_agg) + geom_smooth(method = "lm") + labs(title = "Coal Emissions in the USA")
+print(f)
