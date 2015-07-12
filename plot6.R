@@ -29,13 +29,18 @@ output <- aggregate(baltimore_la_cars$Emissions, by = list(Year = baltimore_la_c
 colnames(output) <- c("Year", "Location", "Emissions")
 output$Location <- gsub("24510","Baltimore",output$Location)
 output$Location <- gsub("06037","LA County",output$Location)
-
+output$Location <- factor(output$Location)
+# I want to take the mean for each Location, there has GOT to be a better way
+output$mean[output$Location == "LA County"] <- mean(output$Emissions[output$Location == "LA County"])
+output$mean[output$Location == "Baltimore"] <- mean(output$Emissions[output$Location == "Baltimore"])
+output$Normalised <- output$Emissions/output$mean
+output$Equalised <- output$Emissions - output$mean
 ## and plot
 i <- qplot(Year, 
-           Emissions, 
+           Equalised, 
            data = output, 
            color = Location, 
            facets = .~ Location) + 
   geom_smooth(method="lm") + # + geom_smooth(method = "lm")
-  labs(title = "Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
+  labs(title = "Relative Change in Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
 print(i)
