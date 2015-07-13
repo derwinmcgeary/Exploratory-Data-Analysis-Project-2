@@ -30,17 +30,26 @@ colnames(output) <- c("Year", "Location", "Emissions")
 output$Location <- gsub("24510","Baltimore",output$Location)
 output$Location <- gsub("06037","LA County",output$Location)
 output$Location <- factor(output$Location)
-# I want to take the mean for each Location, there has GOT to be a better way
-output$mean[output$Location == "LA County"] <- mean(output$Emissions[output$Location == "LA County"])
-output$mean[output$Location == "Baltimore"] <- mean(output$Emissions[output$Location == "Baltimore"])
+# I want to take the mean for each Location, and ave() is a nice way to do it
+output$mean <- ave(output$Emissions, output$Location, FUN=mean)
+
+## Emissions isn't a great measurement to plot because the absolute values are so different
+
 output$Normalised <- output$Emissions/output$mean
+# Normalising the Emissions by dividing by the mean gives us
+# something we can plot side-by-side
+# but that means the vertical scales of the two plots are different
+
 output$Equalised <- output$Emissions - output$mean
+# So instead I simply subtract the mean, placing the two curves on one level
+# but preserving the vertical scale
+
 ## and plot
 i <- qplot(Year, 
-           Equalised, 
+           Emissions, 
            data = output, 
            color = Location, 
-           facets = .~ Location) + 
+           facets = Location ~ .) + facet_grid(Location ~ ., scales="free_y") +
   geom_smooth(method="lm") + # + geom_smooth(method = "lm")
   labs(title = "Relative Change in Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
 print(i)
