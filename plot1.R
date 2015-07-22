@@ -22,5 +22,8 @@ NEI <- readRDS(datafiles[2])
 ##### To business!
 itds <- aggregate(NEI$Emissions, by = list(Year = NEI$year), FUN = sum)
 colnames(itds) <- c("Year", "Total Emissions")
+
+png(filename="plot1.png")
 plot(itds)
 abline(lm(`Total Emissions` ~ Year, data=itds), col="blue")
+dev.off()
