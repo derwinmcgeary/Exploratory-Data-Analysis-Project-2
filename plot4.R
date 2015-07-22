@@ -29,5 +29,6 @@ coalnei <- subset(NEI, SCC%in%coalsccs, select = c(Emissions,year))
 coalnei_agg <- aggregate(coalnei$Emissions, by = list(Year = coalnei$year), FUN = sum)
 colnames(coalnei_agg) <- c("Year", "Emissions")
 ## and plot
-f <- qplot(Year, Emissions, data = coalnei_agg) + geom_smooth(method = "lm") + labs(title = "Coal Emissions in the USA")
-print(f)
+png(filename="plot4.png")
+qplot(Year, Emissions, data = coalnei_agg) + geom_smooth(method = "lm") + labs(title = "Coal Emissions in the USA")
+dev.off()

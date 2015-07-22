@@ -45,11 +45,12 @@ output$Equalised <- output$Emissions - output$mean
 # but preserving the vertical scale
 
 ## and plot
-i <- qplot(Year, 
+png(filename="plot6.png")
+qplot(Year, 
            Emissions, 
            data = output, 
            color = Location, 
            facets = Location ~ .) + facet_grid(Location ~ ., scales="free_y") +
   geom_smooth(method="lm") + # + geom_smooth(method = "lm")
   labs(title = "Relative Change in Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
-print(i)
+dev.off()
