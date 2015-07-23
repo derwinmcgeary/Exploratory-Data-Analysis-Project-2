@@ -27,6 +27,6 @@ baltimore_cars <- subset(NEI, fips == "24510" & type == "ON-ROAD", select=c(Emis
 output <- aggregate(baltimore_cars$Emissions, by = list(Year = baltimore_cars$year), FUN = sum)
 colnames(output) <- c("Year", "Emissions")
 ## and plot
-png(filename="plot5.png")
-qplot(Year, Emissions, data = output) + geom_smooth(method = "lm") + labs(title = "Baltimore motor vehicle emissions")
-dev.off()
+
+i <-qplot(Year, Emissions, data = output) + geom_smooth(method = "lm") + labs(title = "Baltimore motor vehicle emissions")
+print(i)

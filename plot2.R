@@ -20,10 +20,8 @@ SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
 ##### To business!
-png(filename="plot2.png")
 sub <- subset(NEI, fips == "24510", select=c(Emissions,year))
 itds <- aggregate(sub$Emissions, by = list(Year = sub$year), FUN = sum)
 colnames(itds) <- c("Year", "Total Emissions")
 plot(itds)
 abline(lm(`Total Emissions` ~ Year, data=itds), col="blue")
-dev.off()

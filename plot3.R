@@ -20,13 +20,11 @@ SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
 ##### To business!
-png(filename="plot3.png")
 baltimore <- subset(NEI, fips == "24510", select=c(Emissions,year, type))
 baltimore_agg <- aggregate(baltimore$Emissions, by = list(Year = baltimore$year, Type = baltimore$type), FUN = sum)
 colnames(baltimore_agg) <- c("Year", "Type", "Emissions")
 g <- qplot(Year, Emissions, data = baltimore_agg, facets = .~ Type) + geom_smooth(method = "lm")
 print(g)
-dev.off()
 # usa_agg <- aggregate(NEI$Emissions, by = list(Year = NEI$year, Type = NEI$type), FUN = sum)
 # colnames(usa_agg) <- c("Year", "Type", "Emissions")
 # h <- qplot(Year, Emissions, data = usa_agg, facets = .~ Type) + geom_smooth(method = "lm")
