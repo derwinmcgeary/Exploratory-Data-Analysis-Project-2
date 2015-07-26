@@ -1,3 +1,4 @@
+### Analysis starts on line 23
 # I'm developing on Ubuntu, and I don't know what you're running, dear reader, so for compatibility...
 if('downloader'%in%installed.packages()[,1]){
   library("downloader")
@@ -19,8 +20,7 @@ print(datafiles)
 SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
-## find all SCC values in SCC where Data.Category is "Onroad"
-
+############ Analysis starts here #####################################
 ## subset NEI to include only rows where type == ON-ROAD AND fips == "24510", plus Emissions and Year
 baltimore_cars <- subset(NEI, fips == "24510" & type == "ON-ROAD", select=c(Emissions,year))
 ## aggregate by year

@@ -1,3 +1,4 @@
+### Analysis starts on line 23
 # I'm developing on Ubuntu, and I don't know what you're running, dear reader, so for compatibility...
 if('downloader'%in%installed.packages()[,1]){
   library("downloader")
@@ -38,21 +39,25 @@ output$Location <- factor(output$Location)
 output$mean <- ave(output$Emissions, output$Location, FUN=mean)
 
 ## Emissions isn't a great measurement to plot because the absolute values are so different
-# I considered two options here
+# I considered three alternatives
 
 # Option one
 output$Normalised <- output$Emissions/output$mean
 # Normalising the Emissions by dividing by the mean gives us
 # something we can plot side-by-side
 # but that means the vertical scales of the two plots are different
-# so I decided on...
+# so I tried
 
 # Option two
 output$Equalised <- output$Emissions - output$mean
 # simply subtract the mean, placing the two curves on one level
 # for comparison  but preserving the vertical scale
+# but that makes it look as though the two areas
+# have similar levels of pollution
 
-## and plot
+# So option three was chosen
+# don't plot them side by side at all
+
 png(filename="plot6.png")
 g <- qplot(Year, 
            Emissions, 
@@ -60,6 +65,6 @@ g <- qplot(Year,
            color = Location, 
            facets = Location ~ .) + facet_grid(Location ~ ., scales="free_y") +
   geom_smooth(method="lm") + # + geom_smooth(method = "lm")
-  labs(title = "Relative Change in Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
+  labs(title = "Motor Vehicle Emissions in Baltimore and LA, 1999-2008")
 print(g)
 dev.off()

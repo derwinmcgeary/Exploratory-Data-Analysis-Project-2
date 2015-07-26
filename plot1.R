@@ -1,3 +1,4 @@
+### Analysis starts on line 23
 # I'm developing on Ubuntu, and I don't know what you're running, dear reader, so for compatibility...
 if('downloader'%in%installed.packages()[,1]){
   library("downloader")
@@ -26,5 +27,6 @@ colnames(itds) <- c("Year", "Total Emissions")
 # and plot it
 png(filename="plot1.png")
 plot(itds)
+title(main="Total emissions in the USA")
 abline(lm(`Total Emissions` ~ Year, data=itds), col="blue")
 dev.off()

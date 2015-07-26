@@ -1,3 +1,4 @@
+### Analysis starts on line 23
 # I'm developing on Ubuntu, and I don't know what you're running, dear reader, so for compatibility...
 if('downloader'%in%installed.packages()[,1]){
   library("downloader")
@@ -19,7 +20,7 @@ datafiles <- unzip(zipfile)
 print(datafiles)
 SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
-
+############ Analysis starts here ###################
 ## find all SCC values in SCC where Short.Name includes "Coal" (or "coal")
 coalscc <- subset(SCC, stri_detect_regex(Short.Name,"Coal", case_insensitive=TRUE), select = c(SCC))
 coalsccs <- coalscc$SCC

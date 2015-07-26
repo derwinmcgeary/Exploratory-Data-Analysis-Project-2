@@ -1,3 +1,4 @@
+### Analysis starts on line 23
 # I'm developing on Ubuntu, and I don't know what you're running, dear reader, so for compatibility...
 if('downloader'%in%installed.packages()[,1]){
   library("downloader")
@@ -28,6 +29,7 @@ itds <- aggregate(sub$Emissions, by = list(Year = sub$year), FUN = sum)
 
 colnames(itds) <- c("Year", "Total Emissions")
 plot(itds)
+title(main="Total emissions in Baltimore")
 abline(lm(`Total Emissions` ~ Year, data=itds), col="blue")
 
 dev.off()
