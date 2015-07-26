@@ -28,5 +28,6 @@ output <- aggregate(baltimore_cars$Emissions, by = list(Year = baltimore_cars$ye
 colnames(output) <- c("Year", "Emissions")
 ## and plot
 png(filename="plot5.png")
-qplot(Year, Emissions, data = output) + geom_smooth(method = "lm") + labs(title = "Baltimore motor vehicle emissions")
+g <- qplot(Year, Emissions, data = output) + geom_smooth(method = "lm") + labs(title = "Baltimore motor vehicle emissions")
+print(g)
 dev.off()

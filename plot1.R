@@ -19,10 +19,11 @@ print(datafiles)
 SCC <- readRDS(datafiles[1])
 NEI <- readRDS(datafiles[2])
 
-##### To business!
+######### Analysis starts here ###########################################
+# aggregate() is a very handy function
 itds <- aggregate(NEI$Emissions, by = list(Year = NEI$year), FUN = sum)
 colnames(itds) <- c("Year", "Total Emissions")
-
+# and plot it
 png(filename="plot1.png")
 plot(itds)
 abline(lm(`Total Emissions` ~ Year, data=itds), col="blue")

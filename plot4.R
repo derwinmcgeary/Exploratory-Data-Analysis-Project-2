@@ -30,5 +30,6 @@ coalnei_agg <- aggregate(coalnei$Emissions, by = list(Year = coalnei$year), FUN 
 colnames(coalnei_agg) <- c("Year", "Emissions")
 ## and plot
 png(filename="plot4.png")
-qplot(Year, Emissions, data = coalnei_agg) + geom_smooth(method = "lm") + labs(title = "Coal Emissions in the USA")
+g <- qplot(Year, Emissions, data = coalnei_agg) + geom_smooth(method = "lm") + labs(title = "Coal Emissions in the USA")
+print(g)
 dev.off()
